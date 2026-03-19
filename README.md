@@ -1,598 +1,304 @@
-# Guidewire_2026
-# 🚀 SurakshaPay — AI-Powered Parametric Income Protection for Gig Workers
-
-> **Guidewire DEVTrails 2026** | Team Submission | Phase 1
+# 🚀 SurakshaPay – AI-Powered Parametric Income Protection for Gig Workers
 
 ---
 
-## 📌 1. The Problem We Are Solving
+## 📌 1. Problem Context
 
-India's gig delivery workforce is the invisible backbone of the urban economy. Millions of delivery partners working with platforms like Zomato, Swiggy, and Zepto depend entirely on daily active hours to earn their livelihood. Unlike salaried employees who receive fixed pay regardless of conditions, a delivery partner's income evaporates the moment they cannot step outside.
+India’s gig economy is powered by millions of delivery partners working for platforms such as Zomato and Swiggy. These workers rely on consistent daily earnings to support their livelihoods. However, their income is highly vulnerable to external disruptions such as heavy rainfall, extreme heat, air pollution, and sudden curfews.
 
-External disruptions — heavy rainfall, extreme heat, hazardous air quality, sudden curfews, or local strikes — can reduce a delivery worker's active hours by 50 to 100 percent on any given day. This translates directly to a 20–30% loss in monthly earnings, with no safety net available to them today.
+During such events, delivery partners are either unable to work or experience a sharp drop in order volume. This leads to immediate income loss, often reducing earnings by 20–30%. Unlike traditional salaried employees, gig workers do not have any structured safety net to absorb such shocks.
 
-The problem is not just financial — it is structural. Traditional insurance products are built for stable, predictable risk profiles. They require claim filing, documentation, agent visits, and waiting periods. For a delivery partner who earns ₹800 today and nothing tomorrow, this system is completely inaccessible and irrelevant.
-
-**SurakshaPay exists to fix this.**
+The core challenge is to design an insurance solution that:
+- Focuses strictly on *loss of income (not health, accident, or vehicle damage)*
+- Works on a *weekly pricing model*, aligned with gig workers’ earning cycles
+- Uses *automation and AI* to eliminate manual claims and delays
 
 ---
 
-## 💡 2. Our Solution
+## 💡 2. Solution Overview
 
-SurakshaPay is a **mobile-first, AI-powered parametric insurance platform** built exclusively for platform-based delivery workers.
+SurakshaPay is a *mobile-first, AI-powered parametric insurance platform* that provides instant income protection to gig workers.
 
-The platform protects workers against **loss of income** caused by external, measurable disruptions. It does not cover health issues, vehicle damage, accidents, or life events — strictly income loss only, as per the challenge mandate.
+The system continuously monitors:
+- Environmental conditions (rainfall, temperature, AQI)
+- Social disruptions (curfews, strikes)
+- Worker activity (deliveries, active hours)
 
-The core insight behind SurakshaPay is simple: if the cause of income loss is measurable and objective (rainfall above a threshold, AQI above a limit, a confirmed curfew), then the payout does not need a claim. It can be triggered automatically.
+When a disruption causes a measurable drop in income, SurakshaPay automatically:
+1. Detects the event
+2. Verifies the user’s activity and location
+3. Calculates income loss
+4. Triggers an instant payout via UPI
 
-This is the parametric model — and we have built an entire AI-driven system around it.
-
-When a disruption hits, SurakshaPay:
-1. Detects the external event in real-time via APIs
-2. Validates that the worker is active and located in the affected zone
-3. Measures the actual income drop against the worker's personal baseline
-4. Runs fraud detection checks
-5. Triggers an instant UPI payout — all within 5 minutes, with zero action required from the worker
+This removes the need for manual claim filing and ensures a *zero-touch, real-time insurance experience*.
 
 ---
 
 ## 🎯 3. Target Persona
 
-**Sub-Category: Food Delivery Partners (Zomato / Swiggy)**
+The primary users of SurakshaPay are *food delivery partners working with platforms like Swiggy and Zomato*.
 
-We chose food delivery partners because:
-
-- They work entirely outdoors, making them maximally exposed to environmental conditions
-- Their income is directly correlated with order volume, which drops sharply during disruptions
-- They operate on short financial cycles — daily and weekly — making annual or monthly insurance impractical
-- Chennai, Bengaluru, Mumbai and other major metros experience frequent weather events that directly impact delivery operations
-- This segment represents over 3 million active delivery partners in India, making the impact potential enormous
+These workers are ideal for this solution because:
+- They work outdoors and are highly exposed to environmental risks
+- Their income is directly dependent on daily activity
+- They operate on short financial cycles (daily/weekly)
 
 ---
 
-## 👤 4. Persona Scenario — Ravi's Story
+## 👤 4. Persona-Based Scenario
 
-Meet **Ravi**, a Swiggy delivery partner based in Chennai's T. Nagar area.
+Consider Ravi, a delivery partner in Chennai.
 
-Ravi works six days a week, averaging 8 active hours per day. On a good day he earns around ₹800, primarily during lunch (12–3 PM) and dinner (7–10 PM) peak windows. He has a consistent work pattern, rarely misses shifts, and his earnings over the past month have been stable.
+Ravi typically works 6 days a week and earns around ₹800 per day. On a normal day, he completes deliveries during peak hours such as lunch and dinner.
 
-**The Disruption:**
+On a day of heavy rainfall:
+- Road conditions become unsafe
+- Customer demand drops
+- Ravi is only able to work for 2 hours instead of 8
 
-On a Tuesday afternoon, the Tamil Nadu Meteorological Department records 68mm of rainfall in the T. Nagar zone between 2 PM and 6 PM. Roads flood. Customers cancel orders. Swiggy's own surge algorithm suppresses delivery assignments in the zone.
+As a result, his earnings drop to ₹300.
 
-Ravi manages to work only 1.5 hours before conditions become unsafe. His earnings for the day: ₹190, compared to his 7-day average of ₹810.
+The SurakshaPay system detects:
+- Rainfall exceeding the defined threshold
+- A drop in delivery activity greater than 40%
+- GPS confirmation that Ravi is in the affected zone
 
-**What SurakshaPay Does:**
-
-- OpenWeatherMap API flags rainfall > 50mm in Ravi's GPS zone ✅
-- System checks Ravi's delivery activity — down 77% from his hourly baseline ✅
-- GPS confirms Ravi is located within the disruption boundary ✅
-- Fraud engine verifies no anomalous behavior ✅
-- Payout calculated: `min(income_loss × coverage_ratio, plan_cap)` = ₹480
-- UPI transfer initiated to Ravi's linked account
-- Ravi receives a push notification: *"We've got you covered. ₹480 has been sent to your UPI."*
-
-**Time elapsed: 4 minutes 12 seconds. Zero action required from Ravi.**
+Based on these conditions, the system automatically calculates his income loss and transfers ₹400 to his UPI account within minutes.
 
 ---
 
-## 🔄 5. End-to-End Application Workflow
+## 🔄 5. End-to-End System Workflow
 
-### Stage 1: Onboarding
+The SurakshaPay system operates as a continuous automated pipeline:
 
-The worker downloads the SurakshaPay app and registers using mobile OTP. During onboarding, they:
-- Select their delivery platform (Zomato / Swiggy)
-- Allow GPS location tracking (required for zone-based disruption matching)
-- Link their UPI ID for instant payouts
-- Complete a brief work profile (average hours per day, preferred zones)
+### Step 1: Onboarding
+The user registers using a mobile number and OTP. They select their delivery platform, enable GPS tracking, and link their UPI account for payouts.
 
-The onboarding is designed to take under 3 minutes. No documents, no agent, no waiting.
+### Step 2: Data Collection
+The system continuously collects:
+- Weather data (rainfall, temperature)
+- Air quality data (AQI)
+- Location data (GPS)
+- Delivery activity (orders, active hours)
 
-### Stage 2: AI Risk Profiling
+### Step 3: Risk Profiling
+AI models analyze historical and real-time data to determine the user’s risk level based on:
+- Location vulnerability
+- Frequency of disruptions
+- Work consistency
+- Income variability
 
-Once onboarded, the system builds an initial **Risk Profile** for the worker. This is not a static score — it is a living model that updates weekly.
+### Step 4: Policy Selection
+The user selects a weekly insurance plan based on their risk level and desired coverage.
 
-The risk profile takes into account:
-- The worker's primary operating zone (flood-prone, heat-exposed, pollution-heavy)
-- Historical weather patterns for that zone (last 12 months of data)
-- The worker's own income variability (how much their earnings fluctuate week to week)
-- Their platform activity consistency (regular vs. irregular worker)
+### Step 5: Real-Time Monitoring
+The system continuously monitors:
+- External disruptions
+- User activity levels
 
-Based on this profile, the system assigns a **Risk Score** of Low, Medium, or High, which directly determines the recommended insurance plan and dynamic premium.
+### Step 6: Trigger Detection
+If a disruption occurs and income drops beyond a threshold, the system activates the parametric trigger.
 
-### Stage 3: Weekly Policy Selection
+### Step 7: Claim Automation
+The system:
+- Validates the user’s location
+- Verifies activity drop
+- Runs fraud checks
+- Calculates payout
 
-The worker selects a weekly plan. Plans are presented in a simple card format with a clear recommended tag based on their risk profile. Premiums are deducted weekly from a prepaid wallet or UPI auto-debit.
-
-### Stage 4: Continuous Monitoring
-
-Throughout the week, the system runs three parallel monitoring threads:
-
-**Thread 1 — Environmental Monitor:** Polls OpenWeatherMap and WAQI APIs every 15 minutes for rainfall, temperature, and AQI readings across all active worker zones.
-
-**Thread 2 — Social Disruption Monitor:** Checks for curfew alerts, traffic disruptions, and zone closures via traffic APIs and news event signals.
-
-**Thread 3 — Activity Monitor:** Tracks each worker's delivery activity (order count, active hours) in real-time, compared against their personal hourly baseline.
-
-### Stage 5: Trigger Evaluation
-
-When a potential disruption is detected, the system runs a **Trigger Evaluation Pipeline**:
-
-```
-IF (external_disruption_confirmed = TRUE)
-AND (worker_in_affected_zone = TRUE)
-AND (income_drop_percentage > threshold)
-AND (fraud_score < risk_limit)
-THEN → initiate_payout()
-```
-
-This logical gate ensures that payouts only happen when all conditions are genuinely met.
-
-### Stage 6: Fraud Detection
-
-Before any payout is approved, the system runs the claim through four fraud detection checks (detailed in Section 11).
-
-### Stage 7: Automated Payout
-
-If the claim passes all checks, the payout is calculated and transferred via UPI. The worker receives a notification with a breakdown of the payout amount and reason.
+### Step 8: Instant Payout
+The payout is transferred via UPI within minutes.
 
 ---
 
-## 💰 6. Weekly Pricing Model — How It Works
+## 💰 6. Weekly Pricing Model
 
-SurakshaPay operates on a **weekly subscription model**. This is a deliberate design choice rooted in how gig workers actually manage money.
+SurakshaPay uses a *weekly subscription-based insurance model*.
 
-A delivery partner does not think in annual or monthly cycles. They think week to week. They get paid week to week. So their insurance must work the same way.
+Instead of paying large annual premiums, users pay a small fixed amount every week to stay protected during that period.
 
-Every Monday, the system checks whether the worker's weekly plan is active. If the premium has been paid, coverage is live for the next 7 days. If a disruption occurs mid-week, the system calculates payout based on the actual loss incurred during that coverage window.
+### Plan Structure:
 
-### The Three Plans
+| Plan     | Weekly Premium | Coverage |
+|----------|---------------|----------|
+| Basic    | ₹20           | ₹1000    |
+| Standard | ₹35           | ₹1500    |
+| Pro      | ₹50           | ₹2500    |
 
-| Plan | Weekly Premium | Max Weekly Coverage | Max Per-Event Payout | Target Worker |
-|------|---------------|---------------------|----------------------|---------------|
-| Basic 🟢 | ₹20 | ₹1,000 | ₹300 | Part-time, low-risk zones |
-| Standard 🟡 | ₹35 | ₹1,500 | ₹500 | Regular workers, medium-risk |
-| Pro 🔴 | ₹50 | ₹2,500 | ₹800 | Full-time, high-risk zones |
+### Key Concepts:
 
-### Premium ≠ Guaranteed Payout
+- *Premium* is the amount paid weekly to remain insured
+- *Coverage* is the maximum amount the user can receive in a week
 
-A crucial concept for users (and judges) to understand: the premium is the cost of being insured, not a deposit. Ravi pays ₹35 whether or not a disruption occurs. This is standard insurance logic. What he gets in return is the guarantee that if a disruption does occur, he will be compensated up to his plan's coverage limit — without filing a single document.
-
-### The Flexible Boost Add-On
-
-Workers can optionally add ₹10/week to boost their coverage by ₹500 for that week — useful during monsoon season or periods of expected disruption.
-
-### No-Claim Benefit
-
-Workers who go three consecutive weeks without triggering a claim receive a ₹5 discount on the following week's premium. This rewards low-risk behavior and reduces churn.
+This model ensures:
+- Affordability for gig workers
+- Alignment with weekly earning cycles
+- Predictable cost structure
 
 ---
 
-## 🧠 7. AI/ML Integration — Full Technical Detail
+## 🧠 7. AI-Based Pricing (Detailed Explanation)
 
-AI is embedded at four distinct points in the SurakshaPay pipeline. Here is exactly what each model does, why it is used, and how it works.
+AI is used to ensure *fair and personalized pricing* instead of charging all users the same premium.
 
-### 7.1 — Dynamic Premium Calculation (Risk Scoring Model)
+### Problem Without AI:
+All users pay the same price regardless of risk, which is unfair and unsustainable.
 
-**Purpose:** Calculate a personalized weekly premium for each worker instead of charging everyone the same flat rate.
+### AI-Based Approach:
+The system calculates a risk score using factors such as:
+- Location risk (flood-prone or pollution-heavy areas)
+- Weather volatility
+- Work consistency
+- Historical income fluctuations
 
-**Why it matters:** A worker in a flood-prone zone of Chennai carries 3–4x more risk than a worker in a relatively stable zone of Coimbatore. Flat pricing either overcharges low-risk workers (driving them away) or undercharges high-risk workers (making the business unsustainable).
+### Pricing Function:
+#Premium = Base Price + Risk Adjustment
 
-**Model Used:** XGBoost Regressor (Gradient Boosted Trees)
+Where:
+- Risk Adjustment is computed using ML models
 
-**Input Features:**
-- `zone_flood_risk_score` — historical flood frequency for the worker's operating zone (0–1)
-- `zone_heat_index` — average peak temperature in operating zone
-- `zone_aqi_percentile` — 90th percentile AQI reading over last 3 months
-- `worker_income_cv` — coefficient of variation of worker's last 30 days earnings (measures income volatility)
-- `worker_consistency_score` — fraction of expected active hours actually worked
-- `disruption_frequency_local` — number of disruption events in zone in last 90 days
+### Example:
+- Low-risk worker → ₹20–₹25
+- Medium-risk worker → ₹35
+- High-risk worker → ₹50+
 
-**Output:** A continuous risk score → mapped to a premium adjustment factor → applied on top of base plan price.
-
-**Training Data:** Synthetic historical data for Phase 1; real delivery and weather data integration planned for Phase 2.
-
-**Example Output:**
-```
-Base Plan: ₹35 (Standard)
-Zone Risk Adjustment: +₹8 (high flood zone)
-Consistency Bonus: -₹3 (worker has >90% consistency)
-Final Weekly Premium: ₹40
-```
-
----
-
-### 7.2 — Income Baseline & Loss Detection (Time Series Model)
-
-**Purpose:** Determine whether a worker's income has genuinely dropped due to external disruption, and by how much.
-
-**Why it matters:** This is the core of the payout decision. Without an accurate income baseline, we either pay too much (false positives) or too little (failing workers who need help).
-
-**Model Used:** Rolling 7-day Weighted Moving Average (Phase 1) → LSTM for Phase 2
-
-**Phase 1 Implementation:**
-```python
-# Weighted moving average — recent days weighted more heavily
-weights = [0.10, 0.10, 0.12, 0.13, 0.15, 0.18, 0.22]  # day -7 to day -1
-baseline = sum(w * e for w, e in zip(weights, last_7_days_earnings))
-
-# Time-of-day normalization
-hourly_baseline = baseline * hourly_share[current_hour]
-
-# Drop calculation
-drop_pct = (hourly_baseline - actual_earning) / hourly_baseline
-```
-
-**Trigger Condition:**
-```
-drop_pct > 0.40  →  income loss confirmed
-```
-
-**Why weighted average, not simple average?** Yesterday's earnings are more predictive than earnings from 7 days ago. The weights reflect this.
-
-**Phase 2 Upgrade Path:** Replace with LSTM (Long Short-Term Memory) network that learns each worker's weekly and seasonal patterns automatically, including peak-hour behavior, festival surges, and weather correlation.
-
----
-
-### 7.3 — Fraud Detection (Anomaly Detection Model)
-
-**Purpose:** Prevent workers from exploiting the system by faking inactivity, spoofing GPS locations, or submitting duplicate claims.
-
-**Model Used:** Isolation Forest (unsupervised anomaly detection)
-
-**Why Isolation Forest?** It is highly effective at identifying outliers in multidimensional behavioral data without needing labeled fraud examples — which we don't have at launch.
-
-**Features monitored:**
-- `gps_consistency` — does the worker's GPS trace match their claimed zone?
-- `activity_pattern_delta` — how different is today's activity vs. their historical pattern on similar weather days?
-- `device_fingerprint_match` — is the claim coming from the same device used for normal work?
-- `event_claim_ratio` — how many claims has this worker filed vs. peers in the same zone during the same event?
-- `sudden_inactivity_flag` — did the worker go offline with no prior activity decline leading up to the event?
-
-**Output:** A `fraud_score` between 0 and 1. Claims above 0.75 are flagged for manual review. Claims above 0.90 are auto-rejected with notification.
-
-**Additional Rule-Based Checks (complementary to ML):**
-- If disruption is confirmed in Zone A but worker's GPS shows Zone B → reject
-- If same disruption event has already generated a payout this week → reject duplicate
-- If worker was not logged into the delivery app during the disruption window → reject (not working = not insured for that period)
-
----
-
-### 7.4 — Smart Work Hour Suggestions (Predictive Model)
-
-**Purpose:** Proactively help workers maximize safe earning hours by predicting upcoming disruptions.
-
-**Model Used:** Logistic Regression on weather + historical order volume features
-
-**How it works:** Each morning, the app sends the worker a "Today's Forecast" notification:
-```
-🌤️ Today looks good for earnings — high demand expected 12–3 PM
-⚠️ Rain likely after 6 PM — consider completing deliveries before then
-```
-
-This is the gamification layer — workers who follow safe-hour recommendations earn more and claim less, which lowers the platform's overall loss ratio.
+This ensures:
+- High-risk users contribute slightly more
+- Low-risk users are rewarded with lower premiums
 
 ---
 
 ## 🌪️ 8. Parametric Trigger System
 
-The parametric trigger system is the engine of SurakshaPay. Unlike traditional insurance, where the worker must prove their loss, in a parametric system the loss is inferred from objective, pre-agreed conditions.
+SurakshaPay uses *parametric triggers*, meaning payouts are based on measurable external conditions rather than manual claims.
 
-### Environmental Triggers
+### Trigger Categories:
 
-| Trigger | Threshold | API Source |
-|---------|-----------|------------|
-| Heavy Rainfall | > 50mm/day OR > 20mm/hr | OpenWeatherMap |
-| Extreme Heat | > 40°C sustained for 3+ hours | OpenWeatherMap |
-| Severe Air Quality | AQI > 300 | WAQI API |
-| Flood Alert | Official flood advisory issued | Government alert API / news signals |
+#### Environmental Triggers:
+- Rainfall > 50mm
+- Temperature > 40°C
+- AQI > 300
 
-### Social Disruption Triggers
+#### Social Triggers:
+- Curfews
+- Strikes
+- Road closures
 
-| Trigger | Detection Method |
-|---------|-----------------|
-| Curfew / Section 144 | Government notification feeds |
-| Local Strike | News event classification |
-| Zone Closure | Traffic API + local news signals |
+#### Income Trigger:
+- Delivery activity drop > 40%
 
-### Income Activity Trigger
+### Trigger Logic:
+##IF (External Disruption Detected) AND (Income Drop > Threshold)
+##→ Payout Triggered
 
-| Trigger | Threshold |
-|---------|-----------|
-| Delivery count drop | > 40% below worker's hourly baseline |
-| Active hours drop | > 50% below worker's daily baseline |
-
-### The Dual-Gate Rule
-
-A payout is **only triggered when BOTH conditions are met:**
-
-```
-Gate 1: External disruption confirmed (environmental OR social trigger)
-Gate 2: Worker's personal income drop confirmed (activity trigger)
-
-Both gates must open → Payout approved
-Only one gate open → No payout (protects against false claims)
-```
-
-This dual-gate design is the most important fraud prevention mechanism in the system. A worker cannot claim during a disruption if they were already inactive before it started. A disruption cannot trigger a payout if the worker's earnings were unaffected.
+This ensures that payouts are strictly linked to *loss of income caused by external disruptions*.
 
 ---
 
-## ⚡ 9. Automated Claim & Payout System
+## 📊 9. Income Loss Detection Logic
 
-SurakshaPay eliminates the claim process entirely. There is no form to fill, no document to upload, no agent to call.
+The system builds a *personalized income baseline* for each user.
 
-Here is the complete automated pipeline from disruption to payout:
+### Step 1: Baseline Calculation
+### Expected Income = Average of last 7 days
 
-```
-[Step 1]  Weather/Social API detects disruption event in zone XYZ
-            ↓
-[Step 2]  System identifies all active policyholders in zone XYZ
-            ↓
-[Step 3]  For each worker → check GPS confirms presence in zone
-            ↓
-[Step 4]  For each worker → calculate income drop vs. personal baseline
-            ↓
-[Step 5]  For each eligible worker → run Fraud Detection pipeline
-            ↓
-[Step 6]  Calculate payout amount:
-            payout = min(income_loss × 0.85, plan_max_per_event)
-            ↓
-[Step 7]  Initiate UPI transfer via Razorpay API
-            ↓
-[Step 8]  Send push notification to worker
-            ↓
-[Step 9]  Log event to analytics dashboard
-```
+### Step 2: Real-Time Comparison
+### Drop % = (Expected - Actual) / Expected
 
-**Target SLA: Full pipeline under 5 minutes from disruption detection to UPI transfer initiation.**
+
+### Step 3: Decision
+- If Drop > 40% → valid income loss
+
+This approach ensures accuracy and personalization.
 
 ---
 
-## 🛡️ 10. Fraud Detection — Full Architecture
+## ⚡ 10. Automated Claim & Payout System
 
-Fraud is the existential risk for any parametric insurance system. Because payouts happen automatically, bad actors could attempt to game the system if detection is weak. SurakshaPay uses a layered approach:
+SurakshaPay eliminates manual claims completely.
 
-### Layer 1 — GPS Zone Validation
-Before any claim is processed, the system cross-references the worker's GPS coordinates against the official disruption zone boundary. A worker must be within the affected zone to be eligible. Workers who are 5km away from the event boundary are not considered affected.
+### Flow:
+1. Detect disruption
+2. Validate location
+3. Verify income drop
+4. Run fraud checks
+5. Calculate payout
+6. Transfer via UPI
 
-### Layer 2 — Activity Authenticity Check
-The system checks whether the worker was genuinely logged in and active on their delivery platform before the disruption began. A worker who was already offline or inactive before the event cannot claim income loss caused by the event.
-
-### Layer 3 — Isolation Forest Anomaly Detection
-As described in Section 7.3, this model compares the worker's current behavioral pattern against their historical baseline and against peer workers in the same zone. Outliers are flagged.
-
-### Layer 4 — Duplicate Event Guard
-Each disruption event is assigned a unique `event_id`. The system maintains a claim ledger per worker per event. Once a payout has been issued for event_id X to worker Y, no second payout can be issued for the same event to the same worker.
-
-### Layer 5 — Device & Identity Binding
-Workers are bound to a single device fingerprint and verified phone number. Claims originating from unfamiliar devices are held for additional verification.
+### Processing Time:
+*Less than 5 minutes*
 
 ---
 
-## 📱 11. Platform Choice — Why Mobile
+## 🛡️ 11. Fraud Detection System
 
-We chose a **mobile-first web application** (React PWA) over a native mobile app for Phase 1, with a clear path to native app in Phase 2.
+To ensure reliability, the system includes multiple fraud detection layers:
 
-**Reasoning:**
-- Delivery partners use Android smartphones — a PWA provides instant access without requiring app store approval or download
-- Real-time GPS tracking and push notifications are fully supported in modern PWAs
-- Faster development cycle for Phase 1 — allows more focus on core logic than platform-specific UI
-- UPI deep-link integration works seamlessly in mobile browsers
-
-For Phase 2, we will wrap the PWA in a React Native shell to publish to the Play Store, enabling background location tracking and improved offline reliability.
+- *GPS Validation:* Ensures user is in affected zone
+- *Anomaly Detection:* Identifies unusual inactivity
+- *Duplicate Claim Prevention:* Blocks repeated claims
+- *Behavioral Analysis:* Compares past and current activity
 
 ---
 
-## 🔌 12. System Integrations
+## 📱 12. Platform Choice
 
-| Integration | Purpose | Phase |
-|-------------|---------|-------|
-| OpenWeatherMap API (free tier) | Real-time weather data | Phase 1 |
-| WAQI API (free tier) | Real-time AQI data | Phase 1 |
-| Google Maps / Geocoding API | Zone boundary mapping, GPS validation | Phase 1 |
-| Razorpay Test Mode | Simulated UPI payouts | Phase 1 |
-| Swiggy / Zomato Platform APIs | Delivery activity data | Simulated in Phase 1; real in Phase 2 |
-| Government Alert RSS Feeds | Curfew / disaster notifications | Phase 2 |
+A mobile-first approach is chosen because:
+- Gig workers primarily use smartphones
+- Real-time tracking requires device-level integration
+- Instant payouts and notifications are mobile-centric
 
 ---
 
-## 📊 13. Analytics Dashboard
+## 🔌 13. System Integrations
 
-### Worker View
-The worker dashboard is intentionally simple. It shows:
-- Current week's coverage status (Active / Inactive)
-- Weekly earnings protected (cumulative)
-- Claims received this month with event details
-- Premium payment history
-- Risk score and plan recommendation
-
-### Admin / Insurer View
-The admin dashboard is built for operational insight:
-- Real-time risk heatmap across active zones
-- Claim frequency vs. premium revenue (loss ratio monitoring)
-- Fraud flag queue with reviewer interface
-- Predictive disruption forecast for the coming week (using weather ML model)
-- Worker retention and churn analytics
-- Zone-level payout trend analysis
+- Weather API (OpenWeatherMap)
+- AQI API
+- Google Maps API
+- Payment Gateway (UPI / Razorpay sandbox)
+- Delivery platform APIs (simulated)
 
 ---
 
-## 💡 14. Key Innovations That Set SurakshaPay Apart
+## 📊 14. Analytics Dashboard
 
-**Micro-Zone Risk Pricing:** Most insurance products price at the city level. We price at the neighborhood/zone level. A worker in Velachery (flood-prone) pays a different premium than a worker in Nungambakkam (relatively safer). This is possible because we combine hyper-local weather data with satellite-based flood risk maps.
+### Worker Dashboard:
+- Earnings protected
+- Claims received
+- Active coverage
 
-**Personalized Income Baseline:** We do not use a fixed income threshold to determine loss. We build a rolling baseline for each individual worker based on their own historical pattern. This means Ravi (who earns ₹800/day) and Kiran (who earns ₹1,200/day) both get fair, calibrated protection.
-
-**Dual-Gate Payout Logic:** Our parametric system requires both an external event AND a personal income drop to be confirmed before triggering a payout. This is more robust than single-condition systems and dramatically reduces false positive payouts.
-
-**Safe Hour Predictions:** We go beyond reactive insurance to proactive income protection by predicting disruptions in advance and helping workers plan safer, more productive schedules.
-
-**Gamified Loyalty Model:** Consistent workers who do not claim are rewarded with lower premiums. This aligns worker incentives with platform sustainability.
-
----
-
-## 🧱 15. Tech Stack
-
-### Frontend
-- **React.js + Tailwind CSS** — Component-based UI with utility-first styling
-- **PWA (Progressive Web App)** — Works offline, supports push notifications
-
-### Backend
-- **FastAPI (Python)** — High-performance async API framework
-- **Celery + Redis** — Background task queue for continuous monitoring jobs
-- **JWT Authentication** — Secure mobile session management
-
-### AI/ML
-- **Python** with scikit-learn, pandas, numpy
-- **XGBoost** — Risk scoring and premium calculation
-- **Isolation Forest** — Fraud detection
-- **Weighted Moving Average + LSTM (Phase 2)** — Income baseline modeling
-- **Logistic Regression** — Safe hour prediction
-
-### Database
-- **PostgreSQL** — Primary relational database (users, policies, claims)
-- **Redis** — Real-time activity cache and job queue
-- **TimescaleDB (Phase 2)** — Time-series extension for activity/earnings history
-
-### Infrastructure
-- **Docker + Docker Compose** — Containerized development and deployment
-- **AWS EC2 / Railway** — Hosting
-- **Cloudflare** — CDN and security
-
-### APIs & Integrations
-- OpenWeatherMap API
-- WAQI Air Quality API
-- Google Maps JavaScript API
-- Razorpay Test Mode API
-- Simulated delivery platform activity API (mock server)
+### Admin Dashboard:
+- Risk heatmaps
+- Claim trends
+- Fraud alerts
 
 ---
 
-## 🗺️ 16. Development Roadmap
+## 💡 15. Key Innovations
 
-### Phase 1 (March 4–20): Ideation & Foundation ← CURRENT
-- Define full system architecture and design
-- Write complete README with all technical details
-- Build static UI mockups in React
-- Set up GitHub repository
-- Record 2-minute strategy video
+- Micro-zone level risk pricing
+- AI-based personalized income prediction
+- Fully automated zero-claim insurance model
+- Gamified premium reduction for consistent workers
 
-### Phase 2 (March 21 – April 4): Automation & Protection
-- Build FastAPI backend with full user registration and policy management
-- Implement dynamic premium calculation using XGBoost model
-- Integrate OpenWeatherMap and WAQI APIs for live disruption monitoring
-- Build parametric trigger evaluation pipeline
-- Implement mock UPI payout flow via Razorpay sandbox
-- Build core fraud detection logic (GPS validation + rule-based checks)
+---
 
-### Phase 3 (April 5–17): Scale & Optimise
-- Integrate Isolation Forest anomaly detection for advanced fraud
-- Build full analytics dashboard (worker + admin views)
-- Add income baseline model (weighted moving average)
-- Implement safe-hour prediction notification system
-- Complete end-to-end simulated disruption demo
-- Prepare final pitch deck and 5-minute walkthrough video
+## 🧱 16. Tech Stack
+
+- Frontend: React + Tailwind CSS  
+- Backend: FastAPI  
+- AI/ML: Python (scikit-learn)  
+- Database: PostgreSQL / MongoDB  
 
 ---
 
 ## 🏗️ 17. System Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        MOBILE APP (React PWA)                       │
-│         Onboarding │ Plan Selection │ Dashboard │ Notifications      │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │  HTTPS / REST API
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                      FASTAPI BACKEND CORE                           │
-│   Auth Service │ Policy Service │ Claim Service │ Payout Service     │
-└──────┬──────────────────┬──────────────────┬───────────────────┬────┘
-       │                  │                  │                   │
-       ▼                  ▼                  ▼                   ▼
-┌─────────────┐  ┌──────────────────┐  ┌──────────┐  ┌──────────────┐
-│  DATA       │  │  AI/ML ENGINE    │  │  FRAUD   │  │  PAYOUT      │
-│  INGESTION  │  │                  │  │  ENGINE  │  │  ENGINE      │
-│             │  │ XGBoost          │  │          │  │              │
-│ Weather API │  │ Risk Scorer      │  │Isolation │  │ Razorpay     │
-│ AQI API     │  │                  │  │Forest    │  │ UPI API      │
-│ Maps API    │  │ WMA Income       │  │          │  │              │
-│ Platform    │  │ Baseline Model   │  │GPS Valid │  │ Notification │
-│ APIs (mock) │  │                  │  │          │  │ Service      │
-│             │  │ LogReg Safe-Hour │  │Dup Guard │  │              │
-└──────┬──────┘  └────────┬─────────┘  └────┬─────┘  └──────┬───────┘
-       │                  │                  │               │
-       └──────────────────┴──────────────────┴───────────────┘
-                                   │
-                                   ▼
-              ┌────────────────────────────────────────┐
-              │     PARAMETRIC TRIGGER ENGINE          │
-              │                                        │
-              │  Gate 1: External Event Confirmed?     │
-              │  Gate 2: Income Drop > Threshold?      │
-              │  Gate 3: Fraud Score < Limit?          │
-              │                                        │
-              │  All 3 → APPROVE PAYOUT                │
-              │  Any fail → REJECT / FLAG              │
-              └─────────────────┬──────────────────────┘
-                                │
-                                ▼
-              ┌────────────────────────────────────────┐
-              │           DATABASE LAYER               │
-              │  PostgreSQL │ Redis Cache │ TimescaleDB │
-              │  Users │ Policies │ Claims │ Activity   │
-              └────────────────────────────────────────┘
-```
 
----
 
-## 🎥 18. 2-Minute Video Script
-
-Use this script for your Phase 1 submission video. Aim for confident, clear delivery.
-
----
-
-**[0:00 – 0:20] — The Problem (20 seconds)**
-
-*"Imagine you're a Swiggy delivery partner in Chennai. It starts raining heavily. You can't ride. Orders dry up. You've earned ₹190 instead of your usual ₹800 — and there's nothing you can do about it. No protection. No safety net. This is the reality for over 3 million delivery workers in India every time weather or disruption strikes."*
-
----
-
-**[0:20 – 0:50] — The Solution (30 seconds)**
-
-*"We built SurakshaPay — an AI-powered parametric insurance platform that protects gig workers from income loss caused by external disruptions. Workers pay a small weekly premium — as low as ₹20 — and when a verified disruption reduces their earnings, our system automatically detects it and transfers compensation to their UPI account within minutes. No forms. No waiting. No agent calls. Just instant, intelligent protection."*
-
----
-
-**[0:50 – 1:30] — How It Works (40 seconds)**
-
-*"Here's how it works. [Show UI] A delivery partner onboards in under 3 minutes — mobile OTP, UPI link, done. Our AI engine builds a personal risk profile based on their zone, work history, and income patterns, and recommends the right weekly plan. [Show plan screen] Once they subscribe, our system runs continuously — monitoring weather APIs, AQI levels, and their actual delivery activity. [Show dashboard] When rain hits a zone, our Parametric Trigger Engine checks: Is the disruption real? Is the worker in the zone? Has their income actually dropped? If all three are confirmed and fraud checks pass, the payout is triggered automatically."*
-
----
-
-**[1:30 – 1:50] — AI and Innovation (20 seconds)**
-
-*"What makes this different from existing solutions is the AI layer. We use XGBoost for hyper-local risk pricing — so a worker in a flood-prone zone pays a fair, slightly higher premium than one in a safer area. Isolation Forest catches fraud attempts like GPS spoofing. And a predictive model helps workers know when to work safely to maximize earnings."*
-
----
-
-**[1:50 – 2:00] — Impact (10 seconds)**
-
-*"SurakshaPay gives India's gig workers the financial resilience they deserve — affordable, automated, and built around how they actually live and earn. This is SurakshaPay."*
-
----
 
 ## 📌 19. Conclusion
 
-SurakshaPay is not a feature — it is infrastructure. India's gig economy is growing, but the workers powering it remain economically fragile. Every major rainfall, every curfew, every AQI spike is an uninsured financial shock for millions of people.
+SurakshaPay redefines insurance for gig workers by combining AI, real-time data, and parametric triggers to create a seamless income protection system.
 
-By combining parametric insurance design, real-time API monitoring, AI-driven risk modeling, and instant UPI payouts, SurakshaPay builds a financial safety net that is fast enough, cheap enough, and smart enough to actually serve this underserved population.
-
-We have built the architecture to be scalable beyond food delivery — the same platform can serve e-commerce partners, grocery delivery workers, and any gig segment where income is disrupted by measurable external events.
-
-Phase 1 is our foundation. The architecture is solid, the logic is tested, and the road ahead is clear.
-
----
-
-*Built for Guidewire DEVTrails 2026 | SurakshaPay Team*
+By focusing on affordability, automation, and personalization, the platform provides a scalable and practical solution for income instability in the gig economy.
