@@ -579,7 +579,7 @@ The admin dashboard is built for operational insight:
 ✔ Fraud-resilient dual-gate validation  
 ✔ Sub-5 minute payout pipeline  
 
----# 18. 🛡️ SurakshaPay — Adversarial Defense & Anti-Spoofing Strategy
+---### 18. 🛡️ SurakshaPay — Adversarial Defense & Anti-Spoofing Strategy
 
 > **"Most systems verify location. SurakshaPay verifies reality."**
 ---
