@@ -496,8 +496,90 @@ The admin dashboard is built for operational insight:
 ---
 
 ## 🏗️ 17. System Architecture
-<img width="1080" height="1462" alt="image" src="https://github.com/user-attachments/assets/e2287ad9-f1e5-485a-9df8-8d31003ffbc3" />
 
+### 🔷 17.1 Application Workflow Architecture
+
+<p align="center">
+  <img src="assets/images/app-workflow.png" 
+       alt="SurakshaPay Application Workflow" 
+       width="900"/>
+</p>
+
+<p align="center">
+  <em>
+  End-to-end application workflow showing onboarding, AI risk profiling, 
+  continuous monitoring, disruption detection, fraud validation, and automated payout pipeline.
+  </em>
+</p>
+
+---
+
+### ⚙️ 17.2 Technical Architecture Diagram
+
+<p align="center">
+  <img src="assets/images/tech-architecture.png" 
+       alt="SurakshaPay Technical Architecture" 
+       width="900"/>
+</p>
+
+<p align="center">
+  <em>
+  System-level architecture illustrating frontend (React PWA), backend (FastAPI), 
+  AI/ML modules, monitoring services, database layers, and UPI payment integration.
+  </em>
+</p>
+
+---
+
+## 🧩 17.3 Architecture Breakdown
+
+### 🟢 User Layer
+- Delivery Partner interacts via **React PWA**
+- Handles onboarding, GPS tracking, and policy management
+
+### 🔵 API & Backend Layer
+- **FastAPI** handles:
+  - Authentication (JWT)
+  - Policy management
+  - Trigger evaluation pipeline
+- **Celery + Redis** for asynchronous monitoring jobs
+
+### 🟣 Data & Monitoring Layer
+- **Environmental APIs**
+  - OpenWeatherMap (rain, temperature)
+  - WAQI (air quality)
+- **Social Signals**
+  - Traffic APIs + news feeds
+- **Activity Data**
+  - Delivery platform APIs (simulated Phase 1)
+
+### 🟡 AI/ML Layer
+- **XGBoost** → Dynamic premium calculation  
+- **Weighted Moving Average / LSTM** → Income baseline  
+- **Isolation Forest** → Fraud detection  
+- **Logistic Regression** → Work hour prediction  
+
+### ⚫ Payout & Notification Layer
+- **Razorpay UPI API** for instant transfer  
+- Push notifications for user updates  
+- Admin dashboard for analytics  
+
+### 🟤 Data Storage Layer
+- **PostgreSQL** → Users, policies, claims  
+- **Redis** → Real-time cache & queues  
+- **TimescaleDB (Phase 2)** → Time-series analytics  
+
+---
+
+## 🚀 17.4 Key Architectural Strengths
+
+✔ Fully automated claim-less insurance system  
+✔ Real-time event-driven architecture  
+✔ AI-powered personalization at scale  
+✔ Fraud-resilient dual-gate validation  
+✔ Sub-5 minute payout pipeline  
+
+---
 
 
 ## 📌 18. Conclusion
