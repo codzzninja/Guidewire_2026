@@ -13,16 +13,25 @@ export default defineConfig({
         short_name: "SurakshaPay",
         description:
           "AI-powered parametric income protection for delivery partners",
+        start_url: "/",
+        scope: "/",
         theme_color: "#0c1222",
         background_color: "#f4f6fb",
         display: "standalone",
         orientation: "portrait",
+        // Leading `/` so icons resolve from site root on Vercel (avoids broken manifest icon URLs).
         icons: [
           {
-            src: "pwa-icon.svg",
-            sizes: "any",
+            src: "/pwa-icon.svg",
+            sizes: "512x512",
             type: "image/svg+xml",
-            purpose: "any maskable",
+            purpose: "any",
+          },
+          {
+            src: "/pwa-icon.svg",
+            sizes: "512x512",
+            type: "image/svg+xml",
+            purpose: "maskable",
           },
         ],
       },
