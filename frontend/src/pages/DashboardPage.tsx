@@ -109,7 +109,7 @@ export default function DashboardPage() {
     try {
       const [p, c] = await Promise.all([
         api<Policy | null>("/policies/active"),
-        api<Claim[]>("/claims?limit=12"),
+        api<Claim[]>("/claims?limit=5"),
       ]);
       setPolicy(p);
       setClaims(c);
@@ -847,7 +847,7 @@ export default function DashboardPage() {
             <h2 className="font-display font-bold text-lg text-white mb-1 tracking-tight">Work Area (GPS)</h2>
             <p className="text-sm text-slate-400 mb-4 leading-relaxed">
               Pick your delivery hub, then use <strong className="text-slate-200">real device GPS</strong> so
-              payouts can run fraud checks (zone match + MSTS anti-spoofing from the README).
+              payouts can run fraud checks (zone match + MSTS anti-spoofing).
             </p>
             <select
               className="w-full rounded-2xl border border-glass-border bg-surface/50 text-white px-4 py-3.5 outline-none focus:ring-2 focus:ring-brand/50 mb-3 font-medium transition-all"
@@ -1026,8 +1026,7 @@ export default function DashboardPage() {
           <section className="glass-card rounded-3xl border border-dashed border-brand/30 bg-brand/5 p-5 mb-6">
             <h2 className="font-display font-bold text-xl text-white tracking-tight">Zero-Touch Claim Demo</h2>
             <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-              Dual-gate check: external disruption + your income drop vs baseline. No
-              forms — we simulate a covered event.
+              Dual-gate check: external disruption + your income drop vs baseline.
             </p>
             <div className="flex flex-col gap-2 mt-4">
               <button
@@ -1124,7 +1123,7 @@ export default function DashboardPage() {
               we <strong>add the payment to today&apos;s row</strong>. Baseline blends{" "}
               <strong>same weekday median</strong> + <strong>7-day MA</strong>.
             </p>
-            {rzReady ? (
+            {rzReady && (
               <div className="mb-3 rounded-xl border border-emerald-200 bg-emerald-50/80 px-3 py-2">
                 <p className="text-xs text-emerald-900 font-medium">Razorpay Test Mode ready</p>
                 <p className="text-[11px] text-emerald-800 mt-1">
@@ -1140,12 +1139,6 @@ export default function DashboardPage() {
                   Pay {formatRs(TEST_EARNING_PAISE / 100)} (test) → credit today
                 </button>
               </div>
-            ) : (
-              <p className="text-[11px] text-slate-400 mb-3">
-                Add <span className="font-mono">RAZORPAY_KEY_ID</span> and{" "}
-                <span className="font-mono">RAZORPAY_KEY_SECRET</span> (Test) in{" "}
-                <span className="font-mono">backend/.env</span> to enable Checkout.
-              </p>
             )}
             <div className="max-h-56 overflow-y-auto space-y-2 mb-4 rounded-xl border border-glass-border bg-surface/30 p-3">
               {dailyRows.length === 0 ? (
