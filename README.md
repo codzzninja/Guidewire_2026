@@ -1,6 +1,6 @@
 # 🚀 SurakshaPay — AI-Powered Parametric Income Protection for Gig Workers
 
-> **Guidewire DEVTrails 2026** | Team Submission | Phase 2
+
 **SurakshaPay** is a gig-worker income-protection demo: **FastAPI** backend, **React (Vite)** frontend, **SQLAlchemy** DB, **Celery + Redis** for scheduled jobs, external **weather / AQI / RSS**, **XGBoost** for premium quoting, and a **parametric trigger pipeline** (dual-gate + fraud + Razorpay-style payout).
 
 ---
