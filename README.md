@@ -1,6 +1,177 @@
 # 🚀 SurakshaPay — AI-Powered Parametric Income Protection for Gig Workers
 
-> **Guidewire DEVTrails 2026** | Team Submission | Phase 1
+> **Guidewire DEVTrails 2026** | Team Submission | Phase 2
+**SurakshaPay** is a gig-worker income-protection demo: **FastAPI** backend, **React (Vite)** frontend, **SQLAlchemy** DB, **Celery + Redis** for scheduled jobs, external **weather / AQI / RSS**, **XGBoost** for premium quoting, and a **parametric trigger pipeline** (dual-gate + fraud + Razorpay-style payout).
+
+---
+
+## Repository layout
+
+| Area | Path | Role |
+|------|------|------|
+| Backend API | `backend/app/main.py` | FastAPI app, routers, CORS, `IntegrationError` → 503 |
+| API routes | `backend/app/api/` | `auth`, `users`, `policies`, `claims`, `monitoring`, `payments` |
+| Domain logic | `backend/app/services/` | Triggers, weather, cache, fraud, baseline, payouts, features, premium ML, RSS |
+| ORM models | `backend/app/models/` | User, Policy, Claim, events, earnings, environment snapshot, Razorpay rows |
+| Schemas | `backend/app/schemas/` | Pydantic request/response shapes |
+| Auth deps | `backend/app/deps.py` | JWT `get_current_user` |
+| Config | `backend/app/config.py` | Settings from env (`backend/.env`) |
+| DB | `backend/app/database.py` | Engine + `SessionLocal`; **SQLite** or **Postgres** via `DATABASE_URL` |
+| Celery | `backend/app/worker.py`, `backend/app/tasks.py` | Beat schedule + tasks |
+| ML assets | `backend/app/ml/` | `train_premium_model.py`, `premium_xgb.pkl` |
+| Zone registry | `backend/app/data/work_zones.py` | Work zones metadata |
+| Frontend | `frontend/src/` | Vite + React + Tailwind |
+| Compose | `docker-compose.yml` | `redis`, `backend`, `celery-worker`, `celery-beat`, `frontend` |
+
+---
+
+## How to run (local)
+
+### Backend
+
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate   # Windows
+pip install -r requirements.txt
+copy env.example .env    # then edit
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Celery (optional; matches production story)
+
+- Redis running locally (`REDIS_URL=redis://localhost:6379/0`).
+- Worker: `celery -A app.worker:celery_app worker --loglevel=info`
+- Beat: `celery -A app.worker:celery_app beat --loglevel=info`
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Ensure the UI points at your API (see `frontend/src/lib/api.ts` for base URL / env).
+
+### Docker Compose
+
+```bash
+docker compose up --build
+```
+
+Compose uses a **shared SQLite file** on a volume so **API + Celery** share one database (`DATABASE_URL=sqlite:////app/data/surakshapay.db`).
+
+---
+
+## Environment variables (backend)
+
+
+| Variable | Purpose |
+|----------|---------|
+| `SECRET_KEY` | JWT signing |
+| `DATABASE_URL` | `sqlite:///...` (default dev) or Postgres URL in production |
+| `REDIS_URL` | Celery broker + result backend |
+| `OPENWEATHER_API_KEY` / `WAQI_API_TOKEN` | Live weather + AQI |
+| `GOVERNMENT_RSS_URL` | RSS for social/disruption-style flags |
+| `RAZORPAY_*` | Test orders / payouts; optional if `RAZORPAY_OPTIONAL=true` |
+| `ALLOW_MOCKS` | Dev mode without real integrations |
+| `CORS_ORIGINS` | Allowed browser origins |
+| `ENVIRONMENT_CACHE_TTL_SECONDS` | DB snapshot TTL for env bundle (optional) |
+
+---
+
+## API surface (routers)
+
+Mounted in `backend/app/main.py`:
+
+- **`/auth`** — register / login / JWT
+- **`/users`** — profile, zone, GPS attestation, daily earnings, etc.
+- **`/policies`** — `POST /quote`, `POST /subscribe`, `GET /active`
+- **`/claims`** — list / detail claims
+- **`/monitoring`** — `GET /live` (cached env + flags), `POST /evaluate` (full pipeline for current user)
+- **`/payments`** — Razorpay checkout / webhook flows (see `api/payments.py`)
+- **`/health`**, **`/health/integrations`** — liveness + configured integrations (no secrets exposed)
+
+---
+
+## Core runtime flows
+
+### 1) Live monitors + dashboard
+
+1. Client calls **`GET /monitoring/live`** (optional `?refresh=true`).
+2. **`environment_cache.get_or_refresh_env_rss`** loads or refreshes **OpenWeather + WAQI + RSS**, stores rows in **`EnvironmentSnapshot`**, returns env + RSS + freshness metadata.
+3. **`triggers.live_payload_from_env_rss`** builds boolean **flags** + **details** for the UI. The **AI Shift Coach** on the dashboard computes a client-side score from this payload.
+
+### 2) Parametric evaluation (single user)
+
+1. Client calls **`POST /monitoring/evaluate`** (body may include **`force_mock_disruption`** for demos).
+2. **`triggers.run_pipeline_for_user`**:
+   - Evaluates **external triggers** (weather/AQI/RSS + mock path).
+   - Computes **baseline** and **simulated today earning**, **income drop %**.
+   - **Gate 1:** external disruption active. **Gate 2:** drop above threshold (e.g. 40%).
+   - If both pass and there is an **active policy**, runs **fraud** (`fraud.evaluate_claim`), creates **`DisruptionEvent`** + **`Claim`**, may call **`payouts.initiate_payout`** (Razorpay order or simulated).
+
+### 3) Scheduled jobs (Celery)
+
+From **`worker.py`** / **`tasks.py`**:
+
+- **Every 15 minutes:** `evaluate_all_triggers_task` → **`run_pipeline_all_users`** (same pipeline per user).
+- **Every 5 minutes:** `refresh_environment_snapshots_task` → prefetch env/RSS per user into the DB (**keeps `/live` and pricing inputs warm**).
+
+**Redis** in this codebase is used as Celery’s **broker + result backend** only (not a separate weather cache; snapshots live in the SQL DB).
+
+### 4) Dynamic premium
+
+- **`policies` quote / subscribe** uses **`premium_xgb.quote_plan`**, which builds features via **`services/features.py`** and loads **`app/ml/premium_xgb.pkl`** when present.
+
+### 5) Fraud
+
+- **`services/fraud.py`** — isolation-forest-style signals plus MSTS / geo / attestation checks. Outcome affects **claim status** and whether payout runs.
+
+---
+
+## Frontend (high level)
+
+| File / area | Role |
+|-------------|------|
+| `App.tsx` | Routes / shell |
+| `lib/api.ts` | `fetch` + auth header + error handling |
+| `lib/AuthContext.tsx` | JWT session |
+| `pages/LoginPage.tsx` / `RegisterPage.tsx` | Auth UI |
+| `pages/DashboardPage.tsx` | Policy, live monitors, evaluate, claims list, AI Shift Coach |
+| `data/zones.ts` | Zone list for UX |
+| `lib/razorpayCheckout.ts` | Checkout helper when used |
+
+---
+
+## Database
+
+- **SQLAlchemy** models under `backend/app/models/`; tables created in **`init_db()`** on app startup.
+- **Docker Compose:** SQLite on a shared volume (required so Celery and API share state).
+- **Production:** set **`DATABASE_URL`** to Postgres (or another SQLAlchemy-supported URL).
+
+---
+
+
+
+| Goal | Start here |
+|------|------------|
+| Trigger thresholds / gates | `backend/app/services/triggers.py`, `weather.py`, `rss_alerts.py` |
+| Premium formula / ML | `backend/app/services/premium_xgb.py`, `features.py`, `ml/train_premium_model.py` |
+| Caching / freshness | `backend/app/services/environment_cache.py`, `config.py` TTL |
+| Fraud rules | `backend/app/services/fraud.py` |
+| Payout behavior | `backend/app/services/payouts.py` |
+| Celery schedule | `backend/app/worker.py` |
+| Dashboard UX / coach | `frontend/src/pages/DashboardPage.tsx` |
+
+---
+
+## Health / debugging
+
+- **`GET /health/integrations`** — OpenWeather, WAQI, Razorpay, RSS, model file, cache TTL, fraud label (no secrets).
+- **`503`** with JSON `detail` often means **`IntegrationError`** (missing keys or upstream failure); response may include **`X-Suraksha-Integration`** header.
+
 
 ---
 
